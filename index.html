@@ -104,15 +104,85 @@
   </head>
   <body style="background-color: #e9ecef">
     <div style="background-color: #e9ecef" class="jumbotron">
-      <div class="container text-center amazonBox">
+      <div class="container text-center">
         <h1>Welcome to CVM Dashboard</h1>
         <p>Gen AI Integration</p>
       </div>
     </div>
 
-    <div id="hero" class="container text-center amazonBox p-5">
+    <div id="hero" class="container text-center py-5">
       <h3 class="mb-5">Choose a segment to generate campaigns</h3>
-      <div class="row my-5">
+
+      <div class="container mt-5 mb-5">
+        <div class="row justify-content-center">
+          <div class="col-md-3">
+            <label>Handset</label>
+            <select
+              class="custom-select d-inline-block mr-2"
+              id="selectHandset"
+            >
+              <option value="" selected>Select Handset</option>
+              <option value="Smart Phone">Smart Phone</option>
+              <option value="Premium Smart Phone">Premium Smart Phone</option>
+            </select>
+          </div>
+          <div class="col-md-3">
+            <label>Voice (Average)</label>
+            <select class="custom-select d-inline-block mr-2" id="selectVoice">
+              <option value="" selected>Select Voice Usage</option>
+              <option value="1401 - 1500">1401 - 1500</option>
+              <option value="1501 - 1600">1501 - 1600</option>
+              <option value="1601 - 1700">1601 - 1700</option>
+              <option value="1701 - 1800">1701 - 1800</option>
+              <option value="1901 - 2000">1901 - 2000</option>
+              <option value="2001 - 2100">2001 - 2100</option>
+              <option value="2101 - 2200">2101 - 2200</option>
+              <option value="2201 - 2300">2201 - 2300</option>
+              <option value="2301 - 2400">2301 - 2400</option>
+              <option value="2401 - 2500">2401 - 2500</option>
+            </select>
+          </div>
+          <div class="col-md-3">
+            <label>Data (GB)</label>
+            <select class="custom-select d-inline-block mr-2" id="selectData">
+              <option value="" selected>Select Data</option>
+              <option value="4-6">4-6</option>
+              <option value="5-7">5-7</option>
+              <option value="8-10">8-10</option>
+              <option value="9-11">9-11</option>
+              <option value="11-13">11-13</option>
+              <option value="13-15">13-15</option>
+            </select>
+          </div>
+          <div class="col-md-3">
+            <label>Top N Segments</label>
+            <select class="custom-select d-inline-block" id="selectSegment">
+              <option value="" selected>Select segment</option>
+              <option value="1">Segment 1</option>
+              <option value="2">Segment 2</option>
+              <option value="3">Segment 3</option>
+              <option value="4">Segment 4</option>
+              <option value="5">Segment 5</option>
+              <option value="6">Segment 6</option>
+            </select>
+          </div>
+          <div class="col-md-12">
+            <button
+              type="button"
+              class="btn btn-dark text-light btn-lg mt-5"
+              onclick="showSegment()"
+            >
+              Simulate
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div style="display: none" class="my-5 p-5" id="errorDiv">
+        <p>No data found</p>
+      </div>
+
+      <div class="row my-5 d-none">
         <div class="col-sm-4">
           <button
             class="button-64 w-100"
@@ -154,22 +224,22 @@
       <div class="collapse" id="collapseSegment1">
         <div class="card card-body p-5" style="text-align: left">
           <div class="card-head">
-            <h1>Segment 1 Info</h1>
+            <h1>Segment 1 Profile</h1>
           </div>
 
           <div class="row my-5">
             <div class="col-2">
-              <h1 class="amazonNum">7401</h1>
+              <h1 class="amazonNum">7,401</h1>
               <h3>User Count</h3>
             </div>
 
             <div class="col-2">
-              <h1 class="amazonNum">1485.62</h1>
+              <h1 class="amazonNum">1,485.62</h1>
               <h3>Avg MOU Outgoing</h3>
             </div>
 
             <div class="col-2">
-              <h1 class="amazonNum">6.15</h1>
+              <h1 class="amazonNum">5.15</h1>
               <h3>Avg. Data Usage</h3>
             </div>
 
@@ -184,7 +254,7 @@
             </div>
 
             <div class="col-2">
-              <h1 class="amazonNum">4875</h1>
+              <h1 class="amazonNum">4,875</h1>
               <h3>AON (in Days)</h3>
             </div>
           </div>
@@ -192,7 +262,7 @@
           <div class="text-center">
             <button
               style="width: 300px"
-              class="btn btn-dark btn-lg"
+              class="btn btn-dark btn-lg text-light"
               onclick="createCamp()"
             >
               Create campaign
@@ -284,22 +354,22 @@
       <div class="collapse" id="collapseSegment2">
         <div class="card card-body p-5" style="text-align: left">
           <div class="card-head">
-            <h1>Segment 2 Info</h1>
+            <h1>Segment 2 Profile</h1>
           </div>
 
           <div class="row my-5">
             <div class="col-2">
-              <h1 class="amazonNum">2586</h1>
+              <h1 class="amazonNum">8,586</h1>
               <h3>User Count</h3>
             </div>
 
             <div class="col-2">
-              <h1 class="amazonNum">1725.62</h1>
+              <h1 class="amazonNum">1,725.62</h1>
               <h3>Avg MOU Outgoing</h3>
             </div>
 
             <div class="col-2">
-              <h1 class="amazonNum">8.07</h1>
+              <h1 class="amazonNum">6.07</h1>
               <h3>Avg. Data Usage</h3>
             </div>
 
@@ -314,7 +384,7 @@
             </div>
 
             <div class="col-2">
-              <h1 class="amazonNum">1563</h1>
+              <h1 class="amazonNum">1,563</h1>
               <h3>AON (in Days)</h3>
             </div>
           </div>
@@ -322,7 +392,7 @@
           <div class="text-center">
             <button
               style="width: 300px"
-              class="btn btn-dark btn-lg"
+              class="btn btn-dark btn-lg text-light"
               onclick="createCamp()"
             >
               Create campaign
@@ -414,17 +484,17 @@
       <div class="collapse" id="collapseSegment3">
         <div class="card card-body p-5" style="text-align: left">
           <div class="card-head">
-            <h1>Segment 3 Info</h1>
+            <h1>Segment 3 Profile</h1>
           </div>
 
           <div class="row my-5">
             <div class="col-2">
-              <h1 class="amazonNum">1283</h1>
+              <h1 class="amazonNum">9,167</h1>
               <h3>User Count</h3>
             </div>
 
             <div class="col-2">
-              <h1 class="amazonNum">1736.19</h1>
+              <h1 class="amazonNum">1,936.19</h1>
               <h3>Avg MOU Outgoing</h3>
             </div>
 
@@ -452,7 +522,7 @@
           <div class="text-center">
             <button
               style="width: 300px"
-              class="btn btn-dark btn-lg"
+              class="btn btn-dark btn-lg text-light"
               onclick="createCamp()"
             >
               Create campaign
@@ -539,7 +609,7 @@
         </div>
       </div>
 
-      <div class="row my-5">
+      <div class="row my-5 d-none">
         <div class="col-sm-4">
           <button
             class="button-64 w-100"
@@ -581,17 +651,17 @@
       <div class="collapse" id="collapseSegment4">
         <div class="card card-body p-5" style="text-align: left">
           <div class="card-head">
-            <h1>Segment 4 Info</h1>
+            <h1>Segment 4 Profile</h1>
           </div>
 
           <div class="row my-5">
             <div class="col-2">
-              <h1 class="amazonNum">586</h1>
+              <h1 class="amazonNum">10,719</h1>
               <h3>User Count</h3>
             </div>
 
             <div class="col-2">
-              <h1 class="amazonNum">1748.64</h1>
+              <h1 class="amazonNum">2,048.64</h1>
               <h3>Avg MOU Outgoing</h3>
             </div>
 
@@ -619,7 +689,7 @@
           <div class="text-center">
             <button
               style="width: 300px"
-              class="btn btn-dark btn-lg"
+              class="btn btn-dark btn-lg text-light"
               onclick="createCamp()"
             >
               Create campaign
@@ -708,22 +778,22 @@
       <div class="collapse" id="collapseSegment5">
         <div class="card card-body p-5" style="text-align: left">
           <div class="card-head">
-            <h1>Segment 5 Info</h1>
+            <h1>Segment 5 Profile</h1>
           </div>
 
           <div class="row my-5">
             <div class="col-2">
-              <h1 class="amazonNum">241</h1>
+              <h1 class="amazonNum">11,782</h1>
               <h3>User Count</h3>
             </div>
 
             <div class="col-2">
-              <h1 class="amazonNum">1642.55</h1>
+              <h1 class="amazonNum">2,297.55</h1>
               <h3>Avg MOU Outgoing</h3>
             </div>
 
             <div class="col-2">
-              <h1 class="amazonNum">10.13</h1>
+              <h1 class="amazonNum">11.13</h1>
               <h3>Avg. Data Usage</h3>
             </div>
 
@@ -746,7 +816,7 @@
           <div class="text-center">
             <button
               style="width: 300px"
-              class="btn btn-dark btn-lg"
+              class="btn btn-dark btn-lg text-light"
               onclick="createCamp()"
             >
               Create campaign
@@ -839,22 +909,22 @@
       <div class="collapse" id="collapseSegment6">
         <div class="card card-body p-5" style="text-align: left">
           <div class="card-head">
-            <h1>Segment 6 Info</h1>
+            <h1>Segment 6 Profile</h1>
           </div>
 
           <div class="row my-5">
             <div class="col-2">
-              <h1 class="amazonNum">9227</h1>
+              <h1 class="amazonNum">12,128</h1>
               <h3>User Count</h3>
             </div>
 
             <div class="col-2">
-              <h1 class="amazonNum">1919.32</h1>
+              <h1 class="amazonNum">2,467.32</h1>
               <h3>Avg MOU Outgoing</h3>
             </div>
 
             <div class="col-2">
-              <h1 class="amazonNum">7.28</h1>
+              <h1 class="amazonNum">14.28</h1>
               <h3>Avg. Data Usage</h3>
             </div>
 
@@ -869,7 +939,7 @@
             </div>
 
             <div class="col-2">
-              <h1 class="amazonNum">8159</h1>
+              <h1 class="amazonNum">8,159</h1>
               <h3>AON (in Days)</h3>
             </div>
           </div>
@@ -877,7 +947,7 @@
           <div class="text-center">
             <button
               style="width: 300px"
-              class="btn btn-dark btn-lg"
+              class="btn btn-dark btn-lg text-light"
               onclick="createCamp()"
             >
               Create campaign
@@ -1009,9 +1079,76 @@
 
         // Loop through each element and set its display property to "block"
         for (var i = 0; i < elements.length; i++) {
-          console.log(i);
+          // console.log(i);
           elements[i].style.display = disp;
           // elements[i].style.backgroundColor = "red";
+        }
+      }
+
+      function showSegment() {
+        createCamp("none");
+        let handset = document.getElementById("selectHandset").value;
+        let voice = document.getElementById("selectVoice").value;
+        let data = document.getElementById("selectData").value;
+        let segment = document.getElementById("selectSegment").value;
+
+        console.log({ handset, voice, data, segment });
+        var elements = document.getElementsByClassName("collapse");
+        for (var i = 0; i < elements.length; i++) {
+          elements[i].style.display = "none";
+        }
+        document.getElementById("errorDiv").style.display = "none";
+
+        if (
+          handset === "Smart Phone" &&
+          voice === "1401 - 1500" &&
+          data === "4-6" &&
+          segment === "6"
+        ) {
+          // $("collapseSegment1").collapse("toggle");
+          document.getElementById("collapseSegment1").style.display = "block";
+        } else if (
+          handset === "Smart Phone" &&
+          voice === "1701 - 1800" &&
+          data === "5-7" &&
+          segment === "5"
+        ) {
+          // $("collapseSegment2").collapse("toggle");
+          document.getElementById("collapseSegment2").style.display = "block";
+        } else if (
+          handset === "Smart Phone" &&
+          voice === "1901 - 2000" &&
+          data === "8-10" &&
+          segment === "4"
+        ) {
+          // $("collapseSegment3").collapse("toggle");
+          document.getElementById("collapseSegment3").style.display = "block";
+        } else if (
+          handset === "Premium Smart Phone" &&
+          voice === "2001 - 2100" &&
+          data === "9-11" &&
+          segment === "3"
+        ) {
+          // $("collapseSegment4").collapse("toggle");
+          document.getElementById("collapseSegment4").style.display = "block";
+        } else if (
+          handset === "Premium Smart Phone" &&
+          voice === "2201 - 2300" &&
+          data === "11-13" &&
+          segment === "2"
+        ) {
+          // $("collapseSegment5").collapse("toggle");
+          document.getElementById("collapseSegment5").style.display = "block";
+        } else if (
+          handset === "Premium Smart Phone" &&
+          voice === "2401 - 2500" &&
+          data === "13-15" &&
+          segment === "1"
+        ) {
+          // $("collapseSegment6").collapse("toggle");
+          document.getElementById("collapseSegment6").style.display = "block";
+        } else {
+          document.getElementById("errorDiv").style.display = "block";
         }
       }
     </script>
