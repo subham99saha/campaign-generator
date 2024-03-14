@@ -97,36 +97,80 @@
       .card-head h1 {
         margin-right: 10px; /* Add some space between the heading and button */
       }
-      .camp-sugg {
-        display: none;
-      }
     </style>
   </head>
   <body style="background-color: #e9ecef">
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="loadingModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="loadingModalTitle"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-body text-center">
+            Creating campaigns, please wait a while ...
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div style="background-color: #e9ecef" class="jumbotron">
       <div class="container text-center">
-        <h1>Welcome to CVM Dashboard</h1>
+        <h2 style="font-size: 40px">Welcome to CVM Dashboard</h2>
         <p>Gen AI Integration</p>
       </div>
     </div>
 
     <div id="hero" class="container text-center py-5">
-      <h3 class="mb-5">Choose a segment to generate campaigns</h3>
+      <h3 class="mb-5">
+        Choose from the following filters to generate campaigns
+      </h3>
 
       <div class="container mt-5 mb-5">
         <div class="row justify-content-center">
           <div class="col-md-3">
+            <label>Top N Segments</label>
+            <select
+              class="custom-select d-inline-block"
+              id="selectTopSegment"
+              onchange="handleTopSegmentChange()"
+            >
+              <option value="" selected>Select Segment</option>
+              <option value="1">Top 1</option>
+              <option value="3">Top 3</option>
+              <option value="5">Top 5</option>
+            </select>
+          </div>
+          <div class="col-md-3">
+            <label>Bottom N Segments</label>
+            <select
+              class="custom-select d-inline-block"
+              id="selectBottomSegment"
+              onchange="handleBottomSegmentChange()"
+            >
+              <option value="" selected>Select Segment</option>
+              <option value="1">Bottom 1</option>
+              <option value="3">Bottom 3</option>
+              <option value="5">Bottom 5</option>
+            </select>
+          </div>
+          <div class="col-md-2">
             <label>Handset</label>
             <select
               class="custom-select d-inline-block mr-2"
               id="selectHandset"
             >
               <option value="" selected>Select Handset</option>
-              <option value="Smart Phone">Smart Phone</option>
-              <option value="Premium Smart Phone">Premium Smart Phone</option>
+              <option value="4G">4G</option>
+              <option value="5G">5G</option>
+              <option value="4G + 5G">4G + 5G</option>
             </select>
           </div>
-          <div class="col-md-3">
+          <div class="col-md-2">
             <label>Voice (Average)</label>
             <select class="custom-select d-inline-block mr-2" id="selectVoice">
               <option value="" selected>Select Voice Usage</option>
@@ -142,7 +186,7 @@
               <option value="2401 - 2500">2401 - 2500</option>
             </select>
           </div>
-          <div class="col-md-3">
+          <div class="col-md-2">
             <label>Data (GB)</label>
             <select class="custom-select d-inline-block mr-2" id="selectData">
               <option value="" selected>Select Data</option>
@@ -154,23 +198,12 @@
               <option value="13-15">13-15</option>
             </select>
           </div>
-          <div class="col-md-3">
-            <label>Top N Segments</label>
-            <select class="custom-select d-inline-block" id="selectSegment">
-              <option value="" selected>Select segment</option>
-              <option value="1">Segment 1</option>
-              <option value="2">Segment 2</option>
-              <option value="3">Segment 3</option>
-              <option value="4">Segment 4</option>
-              <option value="5">Segment 5</option>
-              <option value="6">Segment 6</option>
-            </select>
-          </div>
+
           <div class="col-md-12">
             <button
               type="button"
               class="btn btn-dark text-light btn-lg mt-5"
-              onclick="showSegment()"
+              onclick="showLoadingModal()"
             >
               Simulate
             </button>
@@ -221,7 +254,7 @@
         </div>
       </div>
 
-      <div class="collapse" id="collapseSegment1">
+      <div class="collapse mb-5" id="collapseSegment1">
         <div class="card card-body p-5" style="text-align: left">
           <div class="card-head">
             <h1>Segment 1 Profile</h1>
@@ -229,44 +262,40 @@
 
           <div class="row my-5">
             <div class="col-2">
-              <h1 class="amazonNum">7,401</h1>
+              <h1 class="amazonNum">15,128</h1>
               <h3>User Count</h3>
             </div>
 
             <div class="col-2">
-              <h1 class="amazonNum">1,485.62</h1>
+              <h1 class="amazonNum">149</h1>
               <h3>Avg MOU Outgoing</h3>
             </div>
 
             <div class="col-2">
-              <h1 class="amazonNum">5.15</h1>
+              <h1 class="amazonNum">0-1 GB</h1>
               <h3>Avg. Data Usage</h3>
             </div>
 
             <div class="col-2">
-              <h1 class="amazonNum">47.91</h1>
+              <h1 class="amazonNum">₹0</h1>
               <h3>ARPU</h3>
             </div>
 
             <div class="col-2">
-              <h2>Low Voice & Low Data Users</h2>
-              <h3>Segment Intent</h3>
+              <h1 class="amazonNum">₹0</h1>
+              <h3>Avg Recharge</h3>
             </div>
 
             <div class="col-2">
-              <h1 class="amazonNum">4,875</h1>
-              <h3>AON (in Days)</h3>
+              <h1 class="amazonNum">0-1</h1>
+              <h3>AON (Years)</h3>
             </div>
           </div>
 
-          <div class="text-center">
-            <button
-              style="width: 300px"
-              class="btn btn-dark btn-lg text-light"
-              onclick="createCamp()"
-            >
-              Create campaign
-            </button>
+          <div>
+            <p style="font-size: 16px">
+              Intent: <strong>Win Back-Save</strong>
+            </p>
           </div>
 
           <div class="camp-sugg">
@@ -290,68 +319,17 @@
               <p><strong>Headline</strong>: Ultimate Bundle Deal</p>
               <p>
                 <strong>Description</strong>: Upgrade to our Ultimate Bundle and
-                get 10GB extra data, unlimited voice calls, and a free
+                get 10GB extra data, unlimited voice calls for free, and a free
                 subscription to our premium streaming service for 3 months.
                 Enjoy the best of everything with this exclusive offer
               </p>
               <p><strong>Recommended Channel</strong>: SMS or Email</p>
             </div>
-            <div
-              class="my-5 p-5"
-              style="
-                width: 100%;
-                background-image: linear-gradient(
-                  144deg,
-                  #ffffff,
-                  #e1e1e1 50%,
-                  #b8b8b8
-                );
-                color: black;
-                font-size: 14px;
-                border-radius: 8px;
-              "
-            >
-              <p><strong>Headline</strong>: Family Plan Special</p>
-              <p>
-                <strong>Description</strong>: Switch to our Family Plan and get
-                5GB extra data for each family member, unlimited family voice
-                calling, and a free subscription to our family entertainment
-                package. Keep everyone connected and entertained
-              </p>
-              <p><strong>Recommended Channel</strong>: In-App Notification</p>
-            </div>
-
-            <div
-              class="my-5 p-5"
-              style="
-                width: 100%;
-                background-image: linear-gradient(
-                  144deg,
-                  #ffffff,
-                  #e1e1e1 50%,
-                  #b8b8b8
-                );
-                color: black;
-                font-size: 14px;
-                border-radius: 8px;
-              "
-            >
-              <p><strong>Headline</strong>: Loyalty Rewards Program</p>
-              <p>
-                <strong>Description</strong>: Join our Loyalty Rewards Program
-                and earn points for every data purchase, voice call, and
-                subscription renewal. Redeem points for extra data, voice
-                minutes, or exclusive discounts on devices and accessories
-              </p>
-              <p>
-                <strong>Recommended Channel</strong>: Social Media Advertisement
-              </p>
-            </div>
           </div>
         </div>
       </div>
 
-      <div class="collapse" id="collapseSegment2">
+      <div class="collapse mb-5" id="collapseSegment2">
         <div class="card card-body p-5" style="text-align: left">
           <div class="card-head">
             <h1>Segment 2 Profile</h1>
@@ -359,44 +337,38 @@
 
           <div class="row my-5">
             <div class="col-2">
-              <h1 class="amazonNum">8,586</h1>
+              <h1 class="amazonNum">11,782</h1>
               <h3>User Count</h3>
             </div>
 
             <div class="col-2">
-              <h1 class="amazonNum">1,725.62</h1>
+              <h1 class="amazonNum">1,726</h1>
               <h3>Avg MOU Outgoing</h3>
             </div>
 
             <div class="col-2">
-              <h1 class="amazonNum">6.07</h1>
+              <h1 class="amazonNum">2-3 GB</h1>
               <h3>Avg. Data Usage</h3>
             </div>
 
             <div class="col-2">
-              <h1 class="amazonNum">54.39</h1>
+              <h1 class="amazonNum">₹367</h1>
               <h3>ARPU</h3>
             </div>
 
             <div class="col-2">
-              <h2>Moderate Voice & Moderate Data users</h2>
-              <h3>Segment Intent</h3>
+              <h1 class="amazonNum">₹129</h1>
+              <h3>Avg Recharge</h3>
             </div>
 
             <div class="col-2">
-              <h1 class="amazonNum">1,563</h1>
-              <h3>AON (in Days)</h3>
+              <h1 class="amazonNum">2-3</h1>
+              <h3>AON (Years)</h3>
             </div>
           </div>
 
-          <div class="text-center">
-            <button
-              style="width: 300px"
-              class="btn btn-dark btn-lg text-light"
-              onclick="createCamp()"
-            >
-              Create campaign
-            </button>
+          <div>
+            <p style="font-size: 16px">Intent: <strong>Churn-Save</strong></p>
           </div>
 
           <div class="camp-sugg">
@@ -422,66 +394,15 @@
                 <strong>Description</strong>: Upgrade to our Premium Plan and
                 get double the data for the next three months. Plus, enjoy
                 unlimited voice calls and a free subscription to our exclusive
-                content library
+                content library only for Rs 299
               </p>
               <p><strong>Recommended Channel</strong>: SMS or Email</p>
-            </div>
-            <div
-              class="my-5 p-5"
-              style="
-                width: 100%;
-                background-image: linear-gradient(
-                  144deg,
-                  #ffffff,
-                  #e1e1e1 50%,
-                  #b8b8b8
-                );
-                color: black;
-                font-size: 14px;
-                border-radius: 8px;
-              "
-            >
-              <p><strong>Headline</strong>: Voice & Data Combo Deal</p>
-              <p>
-                <strong>Description</strong>: Switch to our Voice & Data Combo
-                Plan and get 5GB extra data every month, along with unlimited
-                voice calls. Stay connected and entertained without worrying
-                about data limits.
-              </p>
-              <p><strong>Recommended Channel</strong>: In-App Notification</p>
-            </div>
-
-            <div
-              class="my-5 p-5"
-              style="
-                width: 100%;
-                background-image: linear-gradient(
-                  144deg,
-                  #ffffff,
-                  #e1e1e1 50%,
-                  #b8b8b8
-                );
-                color: black;
-                font-size: 14px;
-                border-radius: 8px;
-              "
-            >
-              <p><strong>Headline</strong>: Exclusive Subscription Offer</p>
-              <p>
-                <strong>Description</strong>: Upgrade now and get a free
-                one-month subscription to our premium services, including extra
-                data, voice minutes, and access to exclusive content. Limited
-                time offer, grab it now
-              </p>
-              <p>
-                <strong>Recommended Channel</strong>: Social Media Advertisement
-              </p>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="collapse" id="collapseSegment3">
+      <div class="collapse mb-5" id="collapseSegment3">
         <div class="card card-body p-5" style="text-align: left">
           <div class="card-head">
             <h1>Segment 3 Profile</h1>
@@ -489,44 +410,38 @@
 
           <div class="row my-5">
             <div class="col-2">
-              <h1 class="amazonNum">9,167</h1>
+              <h1 class="amazonNum">7,719</h1>
               <h3>User Count</h3>
             </div>
 
             <div class="col-2">
-              <h1 class="amazonNum">1,936.19</h1>
+              <h1 class="amazonNum">1,936</h1>
               <h3>Avg MOU Outgoing</h3>
             </div>
 
             <div class="col-2">
-              <h1 class="amazonNum">8.61</h1>
+              <h1 class="amazonNum">4-5 GB</h1>
               <h3>Avg. Data Usage</h3>
             </div>
 
             <div class="col-2">
-              <h1 class="amazonNum">54.03</h1>
+              <h1 class="amazonNum">₹481</h1>
               <h3>ARPU</h3>
             </div>
 
             <div class="col-2">
-              <h2>Moderate Voice & Balanced Data Users</h2>
-              <h3>Segment Intent</h3>
+              <h1 class="amazonNum">₹149</h1>
+              <h3>Avg Recharge</h3>
             </div>
 
             <div class="col-2">
-              <h1 class="amazonNum">923</h1>
-              <h3>AON (in Days)</h3>
+              <h1 class="amazonNum">4-5</h1>
+              <h3>AON (Years)</h3>
             </div>
           </div>
 
-          <div class="text-center">
-            <button
-              style="width: 300px"
-              class="btn btn-dark btn-lg text-light"
-              onclick="createCamp()"
-            >
-              Create campaign
-            </button>
+          <div>
+            <p style="font-size: 16px">Intent: <strong>Churn-Save</strong></p>
           </div>
 
           <div class="camp-sugg">
@@ -552,58 +467,9 @@
                 <strong>Description</strong>: Upgrade your plan today and get
                 10GB extra data per month for the next six months. Plus, enjoy
                 unlimited voice calls and access to our premium content library
+                only for Rs 329
               </p>
               <p><strong>Recommended Channel</strong>: SMS or Email</p>
-            </div>
-            <div
-              class="my-5 p-5"
-              style="
-                width: 100%;
-                background-image: linear-gradient(
-                  144deg,
-                  #ffffff,
-                  #e1e1e1 50%,
-                  #b8b8b8
-                );
-                color: black;
-                font-size: 14px;
-                border-radius: 8px;
-              "
-            >
-              <p><strong>Headline</strong>: Voice Add-on Special</p>
-              <p>
-                <strong>Description</strong>: Add a voice pack to your current
-                plan and get 1000 extra minutes per month. Also, enjoy 5GB extra
-                data and access to our exclusive content
-              </p>
-              <p><strong>Recommended Channel</strong>: In-App Notification</p>
-            </div>
-
-            <div
-              class="my-5 p-5"
-              style="
-                width: 100%;
-                background-image: linear-gradient(
-                  144deg,
-                  #ffffff,
-                  #e1e1e1 50%,
-                  #b8b8b8
-                );
-                color: black;
-                font-size: 14px;
-                border-radius: 8px;
-              "
-            >
-              <p><strong>Headline</strong>: Subscription Bundle Bonanza</p>
-              <p>
-                <strong>Description</strong>: Subscribe to our bundle offer and
-                get a discount on your monthly bill. Plus, enjoy extra data,
-                unlimited voice calls, and a free subscription to our premium
-                services.
-              </p>
-              <p>
-                <strong>Recommended Channel</strong>: Social Media Advertisement
-              </p>
             </div>
           </div>
         </div>
@@ -648,7 +514,7 @@
         </div>
       </div>
 
-      <div class="collapse" id="collapseSegment4">
+      <div class="collapse mb-5" id="collapseSegment4">
         <div class="card card-body p-5" style="text-align: left">
           <div class="card-head">
             <h1>Segment 4 Profile</h1>
@@ -656,44 +522,40 @@
 
           <div class="row my-5">
             <div class="col-2">
-              <h1 class="amazonNum">10,719</h1>
+              <h1 class="amazonNum">9,167</h1>
               <h3>User Count</h3>
             </div>
 
             <div class="col-2">
-              <h1 class="amazonNum">2,048.64</h1>
+              <h1 class="amazonNum">2,049</h1>
               <h3>Avg MOU Outgoing</h3>
             </div>
 
             <div class="col-2">
-              <h1 class="amazonNum">9.11</h1>
+              <h1 class="amazonNum">6-7 GB</h1>
               <h3>Avg. Data Usage</h3>
             </div>
 
             <div class="col-2">
-              <h1 class="amazonNum">53.69</h1>
+              <h1 class="amazonNum">₹525</h1>
               <h3>ARPU</h3>
             </div>
 
             <div class="col-2">
-              <h2>High Voice & High Data Users</h2>
-              <h3>Segment Intent</h3>
+              <h1 class="amazonNum">₹199</h1>
+              <h3>Avg Recharge</h3>
             </div>
 
             <div class="col-2">
-              <h1 class="amazonNum">348</h1>
-              <h3>AON (in Days)</h3>
+              <h1 class="amazonNum">6-7</h1>
+              <h3>AON (Years)</h3>
             </div>
           </div>
 
-          <div class="text-center">
-            <button
-              style="width: 300px"
-              class="btn btn-dark btn-lg text-light"
-              onclick="createCamp()"
-            >
-              Create campaign
-            </button>
+          <div>
+            <p style="font-size: 16px">
+              Intent: <strong>Drop In Usage-Save</strong>
+            </p>
           </div>
 
           <div class="camp-sugg">
@@ -718,64 +580,16 @@
               <p>
                 <strong>Description</strong>: Purchase our Data Booster Pack and
                 get 15GB extra data for the next month. Also, enjoy unlimited
-                voice calls and access to our premium content
+                voice calls and access to our premium content in just Rs 299
+                only
               </p>
               <p><strong>Recommended Channel</strong>: SMS or Email</p>
-            </div>
-            <div
-              class="my-5 p-5"
-              style="
-                width: 100%;
-                background-image: linear-gradient(
-                  144deg,
-                  #ffffff,
-                  #e1e1e1 50%,
-                  #b8b8b8
-                );
-                color: black;
-                font-size: 14px;
-                border-radius: 8px;
-              "
-            >
-              <p><strong>Headline</strong>: Voice Upgrade Alert</p>
-              <p>
-                <strong>Description</strong>: Upgrade to our Voice Upgrade Plan
-                and get 2000 extra minutes per month. Plus, enjoy 10GB extra
-                data and a free subscription to our premium services
-              </p>
-              <p><strong>Recommended Channel</strong>: In-App Notification</p>
-            </div>
-
-            <div
-              class="my-5 p-5"
-              style="
-                width: 100%;
-                background-image: linear-gradient(
-                  144deg,
-                  #ffffff,
-                  #e1e1e1 50%,
-                  #b8b8b8
-                );
-                color: black;
-                font-size: 14px;
-                border-radius: 8px;
-              "
-            >
-              <p><strong>Headline</strong>: Subscription Renewal Bonus</p>
-              <p>
-                <strong>Description</strong>: Renew your subscription for the
-                next six months and get 5GB extra data per month. Also, enjoy
-                unlimited voice calls and access to our exclusive content
-              </p>
-              <p>
-                <strong>Recommended Channel</strong>: Social Media Advertisement
-              </p>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="collapse" id="collapseSegment5">
+      <div class="collapse mb-5" id="collapseSegment5">
         <div class="card card-body p-5" style="text-align: left">
           <div class="card-head">
             <h1>Segment 5 Profile</h1>
@@ -783,44 +597,40 @@
 
           <div class="row my-5">
             <div class="col-2">
-              <h1 class="amazonNum">11,782</h1>
+              <h1 class="amazonNum">8,586</h1>
               <h3>User Count</h3>
             </div>
 
             <div class="col-2">
-              <h1 class="amazonNum">2,297.55</h1>
+              <h1 class="amazonNum">2,298</h1>
               <h3>Avg MOU Outgoing</h3>
             </div>
 
             <div class="col-2">
-              <h1 class="amazonNum">11.13</h1>
+              <h1 class="amazonNum">8-9 GB</h1>
               <h3>Avg. Data Usage</h3>
             </div>
 
             <div class="col-2">
-              <h1 class="amazonNum">43.95</h1>
+              <h1 class="amazonNum">₹597</h1>
               <h3>ARPU</h3>
             </div>
 
             <div class="col-2">
-              <h2>Low Voice & High Data Users</h2>
-              <h3>Segment Intent</h3>
+              <h1 class="amazonNum">₹209</h1>
+              <h3>Avg Recharge</h3>
             </div>
 
             <div class="col-2">
-              <h1 class="amazonNum">221</h1>
-              <h3>AON (in Days)</h3>
+              <h1 class="amazonNum">8-9</h1>
+              <h3>AON (Years)</h3>
             </div>
           </div>
 
-          <div class="text-center">
-            <button
-              style="width: 300px"
-              class="btn btn-dark btn-lg text-light"
-              onclick="createCamp()"
-            >
-              Create campaign
-            </button>
+          <div>
+            <p style="font-size: 16px">
+              Intent: <strong>Up Sell-Score</strong>
+            </p>
           </div>
 
           <div class="camp-sugg">
@@ -852,61 +662,11 @@
               </p>
               <p><strong>Recommended Channel</strong>: SMS or Email</p>
             </div>
-            <div
-              class="my-5 p-5"
-              style="
-                width: 100%;
-                background-image: linear-gradient(
-                  144deg,
-                  #ffffff,
-                  #e1e1e1 50%,
-                  #b8b8b8
-                );
-                color: black;
-                font-size: 14px;
-                border-radius: 8px;
-              "
-            >
-              <p><strong>Headline</strong>: Voice Minutes Boost Offer</p>
-              <p>
-                <strong>Description</strong>: Boost your voice minutes with our
-                Voice Minutes Boost offer. Get 1000 extra voice minutes per
-                month, along with 10GB extra data and access to our exclusive
-                content.
-              </p>
-              <p><strong>Recommended Channel</strong>: In-App Notification</p>
-            </div>
-
-            <div
-              class="my-5 p-5"
-              style="
-                width: 100%;
-                background-image: linear-gradient(
-                  144deg,
-                  #ffffff,
-                  #e1e1e1 50%,
-                  #b8b8b8
-                );
-                color: black;
-                font-size: 14px;
-                border-radius: 8px;
-              "
-            >
-              <p><strong>Headline</strong>: Loyalty Rewards Program</p>
-              <p>
-                <strong>Description</strong>: Join our Loyalty Rewards Program
-                and earn points for every data purchase and voice call. Redeem
-                points for extra data, voice minutes, and exclusive discounts
-              </p>
-              <p>
-                <strong>Recommended Channel</strong>: Social Media Advertisement
-              </p>
-            </div>
           </div>
         </div>
       </div>
 
-      <div class="collapse" id="collapseSegment6">
+      <div class="collapse mb-5" id="collapseSegment6">
         <div class="card card-body p-5" style="text-align: left">
           <div class="card-head">
             <h1>Segment 6 Profile</h1>
@@ -914,44 +674,40 @@
 
           <div class="row my-5">
             <div class="col-2">
-              <h1 class="amazonNum">12,128</h1>
+              <h1 class="amazonNum">3,401</h1>
               <h3>User Count</h3>
             </div>
 
             <div class="col-2">
-              <h1 class="amazonNum">2,467.32</h1>
+              <h1 class="amazonNum">2,467</h1>
               <h3>Avg MOU Outgoing</h3>
             </div>
 
             <div class="col-2">
-              <h1 class="amazonNum">14.28</h1>
+              <h1 class="amazonNum">10-11 GB</h1>
               <h3>Avg. Data Usage</h3>
             </div>
 
             <div class="col-2">
-              <h1 class="amazonNum">54.15</h1>
+              <h1 class="amazonNum">₹915</h1>
               <h3>ARPU</h3>
             </div>
 
             <div class="col-2">
-              <h2>High Voice & Low Data Users</h2>
-              <h3>Segment Intent</h3>
+              <h1 class="amazonNum">₹320</h1>
+              <h3>Avg Recharge</h3>
             </div>
 
             <div class="col-2">
-              <h1 class="amazonNum">8,159</h1>
-              <h3>AON (in Days)</h3>
+              <h1 class="amazonNum">10-11</h1>
+              <h3>AON (Years)</h3>
             </div>
           </div>
 
-          <div class="text-center">
-            <button
-              style="width: 300px"
-              class="btn btn-dark btn-lg text-light"
-              onclick="createCamp()"
-            >
-              Create campaign
-            </button>
+          <div>
+            <p style="font-size: 16px">
+              Intent: <strong>Cross Sell-Score</strong>
+            </p>
           </div>
 
           <div class="camp-sugg">
@@ -972,83 +728,20 @@
                 border-radius: 8px;
               "
             >
-              <p><strong>Headline</strong>: Business Essentials Bundle</p>
-              <p>
-                <strong>Description</strong>: Upgrade to our Business Essentials
-                Bundle and get 30GB extra data, unlimited voice calls, and a
-                free subscription to our business productivity suite. Stay
-                productive on the go
-              </p>
-              <p><strong>Recommended Channel</strong>: SMS or Email</p>
-            </div>
-            <div
-              class="my-5 p-5"
-              style="
-                width: 100%;
-                background-image: linear-gradient(
-                  144deg,
-                  #ffffff,
-                  #e1e1e1 50%,
-                  #b8b8b8
-                );
-                color: black;
-                font-size: 14px;
-                border-radius: 8px;
-              "
-            >
               <p><strong>Headline</strong>: Family Plan Special Offer</p>
               <p>
                 <strong>Description</strong>: Switch to our Family Plan and get
                 5GB extra data for each family member, unlimited family voice
                 calling, and a free subscription to our family entertainment
-                package. Keep everyone connected and entertained!
+                package. Keep everyone connected and entertained! All in Just Rs
+                799 only
               </p>
               <p><strong>Recommended Channel</strong>: In-App Notification</p>
-            </div>
-
-            <div
-              class="my-5 p-5"
-              style="
-                width: 100%;
-                background-image: linear-gradient(
-                  144deg,
-                  #ffffff,
-                  #e1e1e1 50%,
-                  #b8b8b8
-                );
-                color: black;
-                font-size: 14px;
-                border-radius: 8px;
-              "
-            >
-              <p><strong>Headline</strong>: Subscription Renewal Bonus</p>
-              <p>
-                <strong>Description</strong>: Renew your subscription for the
-                next six months and get 5GB extra data per month. Also, enjoy
-                unlimited voice calls and access to our exclusive content
-              </p>
-              <p>
-                <strong>Recommended Channel</strong>: Social Media Advertisement
-              </p>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <!-- <footer class="footer mt-auto py-5 bg-dark fixed-bottom">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-6">
-            <span class="text-muted">Your Company Name</span>
-          </div>
-          <div class="col-md-6 text-md-right">
-            <span class="text-muted"
-              >&copy; 2023 Your Company Name. All rights reserved.</span
-            >
-          </div>
-        </div>
-      </div>
-    </footer> -->
 
     <script
       src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
@@ -1068,85 +761,138 @@
     <script>
       function toggleCollapse(targetId) {
         window.scrollTo({ bottom: 0, behavior: "smooth" });
-        createCamp("none");
         $(".collapse").collapse("hide");
         $("#" + targetId).collapse("toggle");
       }
 
-      function createCamp(disp = "block") {
-        // Get all elements with the specified class name
-        var elements = document.getElementsByClassName("camp-sugg");
+      function handleTopSegmentChange() {
+        var topSegment = document.getElementById("selectTopSegment").value;
+        var selectVoice = document.getElementById("selectVoice");
+        var selectData = document.getElementById("selectData");
+        var selectBottomSegment = document.getElementById(
+          "selectBottomSegment"
+        );
 
-        // Loop through each element and set its display property to "block"
-        for (var i = 0; i < elements.length; i++) {
-          // console.log(i);
-          elements[i].style.display = disp;
-          // elements[i].style.backgroundColor = "red";
+        // Reset bottom segment dropdown
+        selectBottomSegment.selectedIndex = 0;
+
+        selectVoice.innerHTML = "";
+        selectData.innerHTML = "";
+
+        if (topSegment === "1") {
+          addOption(selectVoice, "Select Voice Usage", "");
+          addOption(selectData, "Select Data", "");
+          addOption(selectVoice, "2401 - 2500", "2401 - 2500");
+          addOption(selectData, "10 - 11", "10 - 11");
+        } else if (topSegment === "3") {
+          addOption(selectVoice, "Select Voice Usage", "");
+          addOption(selectData, "Select Data", "");
+          addOption(selectVoice, "2001 - 2500", "2001 - 2500");
+          addOption(selectData, "6 - 11", "6 - 11");
+        } else if (topSegment === "5") {
+          addOption(selectVoice, "Select Voice Usage", "");
+          addOption(selectData, "Select Data", "");
+          addOption(selectVoice, "1701 - 2500", "1701 - 2500");
+          addOption(selectData, "2 - 11", "2 - 11");
         }
       }
 
+      function handleBottomSegmentChange() {
+        var bottomSegment = document.getElementById(
+          "selectBottomSegment"
+        ).value;
+        var selectVoice = document.getElementById("selectVoice");
+        var selectData = document.getElementById("selectData");
+        var selectTopSegment = document.getElementById("selectTopSegment");
+
+        // Reset top segment dropdown
+        selectTopSegment.selectedIndex = 0;
+
+        selectVoice.innerHTML = "";
+        selectData.innerHTML = "";
+
+        if (bottomSegment === "1") {
+          addOption(selectVoice, "Select Voice Usage", "");
+          addOption(selectData, "Select Data", "");
+          addOption(selectVoice, "100 - 200", "100 - 200");
+          addOption(selectData, "0 - 1", "0 - 1");
+        } else if (bottomSegment === "3") {
+          addOption(selectVoice, "Select Voice Usage", "");
+          addOption(selectData, "Select Data", "");
+          addOption(selectVoice, "100 - 2000", "100 - 2000");
+          addOption(selectData, "0 - 5", "0 - 5");
+        } else if (bottomSegment === "5") {
+          addOption(selectVoice, "Select Voice Usage", "");
+          addOption(selectData, "Select Data", "");
+          addOption(selectVoice, "100 - 2300", "100 - 2300");
+          addOption(selectData, "0 - 9", "0 - 9");
+        }
+      }
+
+      function addOption(selectElement, text, value) {
+        var option = document.createElement("option");
+        option.text = text;
+        option.value = value;
+        selectElement.add(option);
+      }
+
+      function showLoadingModal() {
+        $("#loadingModal").modal("show");
+
+        setTimeout(function () {
+          // Close the loading modal
+          $("#loadingModal").modal("hide");
+
+          showSegment();
+        }, 5000);
+      }
+
       function showSegment() {
-        createCamp("none");
         let handset = document.getElementById("selectHandset").value;
         let voice = document.getElementById("selectVoice").value;
         let data = document.getElementById("selectData").value;
-        let segment = document.getElementById("selectSegment").value;
+        let topSegment = document.getElementById("selectTopSegment").value;
+        let bottomSegment = document.getElementById(
+          "selectBottomSegment"
+        ).value;
 
-        console.log({ handset, voice, data, segment });
+        console.log({ handset, voice, data, topSegment, bottomSegment });
         var elements = document.getElementsByClassName("collapse");
         for (var i = 0; i < elements.length; i++) {
           elements[i].style.display = "none";
         }
         document.getElementById("errorDiv").style.display = "none";
 
-        if (
-          handset === "Smart Phone" &&
-          voice === "1401 - 1500" &&
-          data === "4-6" &&
-          segment === "6"
-        ) {
-          // $("collapseSegment1").collapse("toggle");
-          document.getElementById("collapseSegment1").style.display = "block";
-        } else if (
-          handset === "Smart Phone" &&
-          voice === "1701 - 1800" &&
-          data === "5-7" &&
-          segment === "5"
-        ) {
-          // $("collapseSegment2").collapse("toggle");
-          document.getElementById("collapseSegment2").style.display = "block";
-        } else if (
-          handset === "Smart Phone" &&
-          voice === "1901 - 2000" &&
-          data === "8-10" &&
-          segment === "4"
-        ) {
-          // $("collapseSegment3").collapse("toggle");
-          document.getElementById("collapseSegment3").style.display = "block";
-        } else if (
-          handset === "Premium Smart Phone" &&
-          voice === "2001 - 2100" &&
-          data === "9-11" &&
-          segment === "3"
-        ) {
-          // $("collapseSegment4").collapse("toggle");
-          document.getElementById("collapseSegment4").style.display = "block";
-        } else if (
-          handset === "Premium Smart Phone" &&
-          voice === "2201 - 2300" &&
-          data === "11-13" &&
-          segment === "2"
-        ) {
-          // $("collapseSegment5").collapse("toggle");
-          document.getElementById("collapseSegment5").style.display = "block";
-        } else if (
-          handset === "Premium Smart Phone" &&
-          voice === "2401 - 2500" &&
-          data === "13-15" &&
-          segment === "1"
-        ) {
-          // $("collapseSegment6").collapse("toggle");
+        if (topSegment === "1") {
+          // ₹("collapseSegment1").collapse("toggle");
           document.getElementById("collapseSegment6").style.display = "block";
+        } else if (topSegment === "3") {
+          // ₹("collapseSegment2").collapse("toggle");
+          document.getElementById("collapseSegment4").style.display = "block";
+          document.getElementById("collapseSegment5").style.display = "block";
+          document.getElementById("collapseSegment6").style.display = "block";
+        } else if (topSegment === "5") {
+          // ₹("collapseSegment3").collapse("toggle");
+          document.getElementById("collapseSegment2").style.display = "block";
+          document.getElementById("collapseSegment3").style.display = "block";
+          document.getElementById("collapseSegment4").style.display = "block";
+          document.getElementById("collapseSegment5").style.display = "block";
+          document.getElementById("collapseSegment6").style.display = "block";
+        } else if (bottomSegment === "1") {
+          // ₹("collapseSegment1").collapse("toggle");
+          document.getElementById("collapseSegment1").style.display = "block";
+        } else if (bottomSegment === "3") {
+          // ₹("collapseSegment2").collapse("toggle");
+          document.getElementById("collapseSegment1").style.display = "block";
+          document.getElementById("collapseSegment2").style.display = "block";
+          document.getElementById("collapseSegment3").style.display = "block";
+        } else if (bottomSegment === "5") {
+          // ₹("collapseSegment3").collapse("toggle");
+          document.getElementById("collapseSegment1").style.display = "block";
+          document.getElementById("collapseSegment2").style.display = "block";
+          document.getElementById("collapseSegment3").style.display = "block";
+          document.getElementById("collapseSegment4").style.display = "block";
+          document.getElementById("collapseSegment5").style.display = "block";
         } else {
           document.getElementById("errorDiv").style.display = "block";
         }
